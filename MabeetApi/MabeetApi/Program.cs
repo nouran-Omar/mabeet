@@ -12,59 +12,58 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
-// لا نحتاج Microsoft.Extensions.FileProviders هنا
 
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. إعداد الـ CORS (origins من appsettings — Development / Production)
 var MyAllowedOrigins = "_myAllowedOrigins";
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
-	?? new[] { "http://localhost:5216", "https://localhost:7066" };
+    ?? new[] { "http://localhost:5216", "https://localhost:7066" };
 
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy(name: MyAllowedOrigins,
-		policy =>
-		{
-			policy.WithOrigins(allowedOrigins)
-				  .AllowAnyHeader()
-				  .AllowAnyMethod();
-		});
+    options.AddPolicy(name: MyAllowedOrigins,
+        policy =>
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
-// 2. إعداد قاعدة البيانات
+// 2. إعداد قاعدة البيانات (اسم الـ DbContext عندك هو AppDbContext)
 builder.Services.AddDbContext<AppDbContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 3. إعداد Identity
 builder.Services.AddIdentity<AppUser, IdentityRole>()
-	.AddEntityFrameworkStores<AppDbContext>()
-	.AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
 // 4. إعداد JWT Authentication
 builder.Services.AddAuthentication(options =>
 {
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
-	options.SaveToken = true;
-	options.RequireHttpsMetadata = false;
-	options.TokenValidationParameters = new TokenValidationParameters()
-	{
-		ValidateIssuer = true,
-		ValidateAudience = true,
-		ValidAudience = builder.Configuration["JWT:ValidAudience"],
-		ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
-	};
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+    };
 });
 
 // 5. تسجيل الخدمات
 builder.Services.AddControllers().AddJsonOptions(x =>
-	x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -72,38 +71,58 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 builder.Services.AddScoped<IAdminAccommodationService, AdminAccommodationService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
-builder.Services.AddScoped<IAccommodationService, AccommodationService>();
+builder.Services.AddScoped<IAccommodationService, AccommodationServiceServiceProvider>(); // اتأكدي من اسم الكلاس الفعلي للملف
 builder.Services.AddScoped<IBookingService, BookingService>();
 
 var app = builder.Build();
 
+// 🔥 [جديد] تشغيل الـ Migrations تلقائياً فور قيام السيرفر في الـ Production
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+            Console.WriteLine("🚀 Database Migrations applied successfully on production!");
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "❌ An error occurred while migrating the database automatically: {Message}", ex.Message);
+    }
+}
+
 // Seed Data (Development only — never wipe production data)
 if (app.Environment.IsDevelopment())
 {
-	using (var scope = app.Services.CreateScope())
-	{
-		var services = scope.ServiceProvider;
-		try
-		{
-			await DataSeeder.SeedData(services);
-		}
-		catch (Exception ex)
-		{
-			var logger = services.GetRequiredService<ILogger<Program>>();
-			logger.LogError(ex, "❌ Error during data seeding: {Message}", ex.Message);
-		}
-	}
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            await DataSeeder.SeedData(services);
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "❌ Error during data seeding: {Message}", ex.Message);
+        }
+    }
 }
 
-// Swagger
-if (app.Environment.IsDevelopment())
+// 🌐 تفعيل الـ Swagger في الـ Development والـ Production عشان تقدري تفتحي الرابط أونلاين وتجربي
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mabeet API V1");
+    // ده بيخلي الـ Swagger يفتح علطول أول ما تدخلي على الدومين الرئيسي لو حابة، أو من خلال /swagger
+});
 
 // 🛑 تفعيل الملفات الثابتة (الصور داخل wwwroot)
-// هذا السطر وحده كافٍ لقراءة أي ملف داخل wwwroot بما في ذلك uploads/accommodations
 app.UseStaticFiles();
 
 app.UseRouting();
