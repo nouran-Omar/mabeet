@@ -71,8 +71,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 builder.Services.AddScoped<IAdminAccommodationService, AdminAccommodationService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
-builder.Services.AddScoped<IAccommodationService, AccommodationServiceServiceProvider>(); // اتأكدي من اسم الكلاس الفعلي للملف
-builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IAccommodationService, AccommodationService>();
 
 var app = builder.Build();
 
