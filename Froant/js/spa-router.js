@@ -14,7 +14,7 @@ class MabeetAuth {
         }
 
         localStorage.setItem('userData', JSON.stringify(userData));
-        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userEmail', userData.email);
 
         return true;
@@ -24,7 +24,7 @@ class MabeetAuth {
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
 
         if (userData.email === email && userData.password === password) {
-            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userEmail', email);
             return true;
         }
@@ -33,12 +33,15 @@ class MabeetAuth {
     }
 
     static logout() {
-        localStorage.removeItem('userLoggedIn');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userToken');
         localStorage.removeItem('userEmail');
+        localStorage.removeItem('userData');
+        localStorage.removeItem('userRole');
     }
 
     static isLoggedIn() {
-        return localStorage.getItem('userLoggedIn') === 'true';
+        return localStorage.getItem('isLoggedIn') === 'true';
     }
 
     static getCurrentUser() {
@@ -83,7 +86,7 @@ class MabeetAuth {
 // components.js
 class MabeetComponents {
     static createNavbar() {
-        const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
         const userName = userData.firstName ? `${userData.firstName} ${userData.lastName}` : 'مستخدم';
 
@@ -290,7 +293,7 @@ function renderComponents() {
 }
 
 function updateAuthUI() {
-    const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const authButtons = document.getElementById('authButtons');
     const userMenu = document.getElementById('userMenu');
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');

@@ -68,8 +68,7 @@ async function loadDetails(id) {
     try {
         if(spinner) spinner.style.display = 'block';
         if(content) content.style.display = 'none';
-        //https://localhost:7066/api/Availability/accommodation/6/all-available-date
-        const avilable = await ApiService.get(`/Availability/accommodation/${id}/all-available-date`, {}, false);
+        const avilable = await ApiService.get(`/Availability/accommodation/${id}/all-available-dates`, {}, false);
 
         console.log("avilable Days :",avilable )
         // طلب البيانات

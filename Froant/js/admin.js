@@ -1,5 +1,5 @@
-window.IS_REAL_API = true; 
-const API_BASE_URL = 'https://localhost:7066/api/admin'; 
+window.IS_REAL_API = true;
+const API_BASE_URL = `${window.SERVER_URL}/api/admin`; 
 
 const contentPlaceholder = document.getElementById('content-placeholder');
 const sidebarLinksDesktop = document.querySelectorAll('#admin-sidebar .nav-link');
@@ -21,8 +21,10 @@ function handleLogout() {
     }).then((result) => {
         if (result.isConfirmed) {
         
-            localStorage.removeItem('authToken'); 
-            
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userData');
+            localStorage.removeItem('userRole');
 
             window.location.href = 'login.html'; 
         }

@@ -1,7 +1,7 @@
 // components.js
 class MabeetComponents {
     static createNavbar() {
-        const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
         const userName = userData.firstName ? `${userData.firstName} ${userData.lastName}` : 'مستخدم';
         

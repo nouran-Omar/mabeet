@@ -16,14 +16,17 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. إعداد الـ CORS
+// 1. إعداد الـ CORS (origins من appsettings — Development / Production)
 var MyAllowedOrigins = "_myAllowedOrigins";
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+	?? new[] { "http://localhost:5216", "https://localhost:7066" };
+
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(name: MyAllowedOrigins,
 		policy =>
 		{
-			policy.AllowAnyOrigin()
+			policy.WithOrigins(allowedOrigins)
 				  .AllowAnyHeader()
 				  .AllowAnyMethod();
 		});
@@ -74,18 +77,21 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 
 var app = builder.Build();
 
-// Seed Data
-using (var scope = app.Services.CreateScope())
+// Seed Data (Development only — never wipe production data)
+if (app.Environment.IsDevelopment())
 {
-	var services = scope.ServiceProvider;
-	try
+	using (var scope = app.Services.CreateScope())
 	{
-		await DataSeeder.SeedData(services);
-	}
-	catch (Exception ex)
-	{
-		var logger = services.GetRequiredService<ILogger<Program>>();
-		logger.LogError(ex, "❌ Error during data seeding: {Message}", ex.Message);
+		var services = scope.ServiceProvider;
+		try
+		{
+			await DataSeeder.SeedData(services);
+		}
+		catch (Exception ex)
+		{
+			var logger = services.GetRequiredService<ILogger<Program>>();
+			logger.LogError(ex, "❌ Error during data seeding: {Message}", ex.Message);
+		}
 	}
 }
 

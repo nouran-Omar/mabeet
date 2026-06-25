@@ -2,7 +2,10 @@
 
 const PORT = "7066"; // ⚠️ تأكدي إن ده البورت بتاعك
 const API_BASE_URL = `https://localhost:${PORT}/api`; 
-const SERVER_URL = `https://localhost:${PORT}`; 
+const SERVER_URL = `https://localhost:${PORT}`;
+
+window.SERVER_URL = SERVER_URL;
+window.API_BASE_URL = API_BASE_URL;
 
 const ApiService = {
     getToken() {
