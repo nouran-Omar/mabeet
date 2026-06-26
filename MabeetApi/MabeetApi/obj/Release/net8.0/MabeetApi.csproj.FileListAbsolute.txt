@@ -177,3 +177,4 @@ C:\Users\Nour\OneDrive - Egyptian E-Learning University\Apps\Desktop\New folder\
 C:\Users\Nour\OneDrive - Egyptian E-Learning University\Apps\Desktop\New folder\Pull\mabeet\MabeetApi\MabeetApi\obj\Release\net8.0\MabeetApi.pdb
 C:\Users\Nour\OneDrive - Egyptian E-Learning University\Apps\Desktop\New folder\Pull\mabeet\MabeetApi\MabeetApi\obj\Release\net8.0\MabeetApi.genruntimeconfig.cache
 C:\Users\Nour\OneDrive - Egyptian E-Learning University\Apps\Desktop\New folder\Pull\mabeet\MabeetApi\MabeetApi\obj\Release\net8.0\ref\MabeetApi.dll
+C:\Users\Nour\OneDrive - Egyptian E-Learning University\Apps\Desktop\New folder\Pull\mabeet\MabeetApi\MabeetApi\obj\Release\net8.0\staticwebassets.upToDateCheck.txt

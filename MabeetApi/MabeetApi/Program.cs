@@ -15,30 +15,27 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. إعداد الـ CORS (origins من appsettings — Development / Production)
+// 1. إعداد الـ CORS مفتوح بالكامل للـ Production لضمان تواصل الفرونت إند بسلاسة
 var MyAllowedOrigins = "_myAllowedOrigins";
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
-	?? new[] { "http://localhost:5216", "https://localhost:7066" };
-
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(name: MyAllowedOrigins,
 		policy =>
 		{
-			policy.WithOrigins(allowedOrigins)
+			policy.AllowAnyOrigin()
 				  .AllowAnyHeader()
 				  .AllowAnyMethod();
 		});
 });
 
-// 2. إعداد قاعدة البيانات (اسم الـ DbContext عندك هو AppDbContext)
-// 2. إعداد قاعدة البيانات (صريحة للـ Production والـ Local)
+// 2. إعداد قاعدة البيانات مع دعم منفذ SQL Server صراحة لـ MonsterASP
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
 	var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-		?? "Server=db57429.databaseasp.net; Database=db57429; User Id=db57429; Password=F@w46G?cx=7X; Encrypt=False; MultipleActiveResultSets=True;";
+		?? "Server=db57429.databaseasp.net,1433; Database=db57429; User Id=db57429; Password=F@w46G?cx=7X; Encrypt=False; MultipleActiveResultSets=True;";
 	options.UseSqlServer(connectionString);
 });
+
 // 3. إعداد Identity
 builder.Services.AddIdentity<AppUser, IdentityRole>()
 	.AddEntityFrameworkStores<AppDbContext>()
@@ -65,7 +62,7 @@ builder.Services.AddAuthentication(options =>
 	};
 });
 
-// 5. تسجيل الخدمات
+// 5. تسجيل الخدمات والتحكم في الـ Cycles
 builder.Services.AddControllers().AddJsonOptions(x =>
 	x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
@@ -79,7 +76,7 @@ builder.Services.AddScoped<IAccommodationService, AccommodationService>();
 
 var app = builder.Build();
 
-// 🔥 [جديد] تشغيل الـ Migrations تلقائياً فور قيام السيرفر في الـ Production
+// 🔥 تشغيل الـ Migrations تلقائياً فور قيام السيرفر أونلاين لإنشاء الجداول
 using (var scope = app.Services.CreateScope())
 {
 	var services = scope.ServiceProvider;
@@ -88,7 +85,7 @@ using (var scope = app.Services.CreateScope())
 		var context = services.GetRequiredService<AppDbContext>();
 		if (context.Database.GetPendingMigrations().Any())
 		{
-			// context.Database.Migrate();
+			context.Database.Migrate(); // تم تفعيلها رسمياً
 			Console.WriteLine("🚀 Database Migrations applied successfully on production!");
 		}
 	}
@@ -99,7 +96,7 @@ using (var scope = app.Services.CreateScope())
 	}
 }
 
-// Seed Data (Development only — never wipe production data)
+// Seed Data (Development only)
 if (app.Environment.IsDevelopment())
 {
 	using (var scope = app.Services.CreateScope())
@@ -117,15 +114,14 @@ if (app.Environment.IsDevelopment())
 	}
 }
 
-// 🌐 تفعيل الـ Swagger في الـ Development والـ Production عشان تقدري تفتحي الرابط أونلاين وتجربي
+// 🌐 تفعيل الـ Swagger في الـ Development والـ Production لرؤية وتجربة الـ Endpoints
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
 	c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mabeet API V1");
-	// ده بيخلي الـ Swagger يفتح علطول أول ما تدخلي على الدومين الرئيسي لو حابة، أو من خلال /swagger
 });
 
-// 🛑 تفعيل الملفات الثابتة (الصور داخل wwwroot)
+// 🛑 تفعيل الملفات الثابتة (الصور والمرفقات داخل wwwroot)
 app.UseStaticFiles();
 
 app.UseRouting();

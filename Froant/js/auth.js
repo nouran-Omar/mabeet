@@ -1,6 +1,7 @@
 // js/auth.js
 class MabeetAuth {
-    static API_BASE_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'https://localhost:7066/api';
+    // 🟢 جعل الكلاس يقرأ مباشرة من window.API_BASE_URL الموحد أونلاين
+    static API_BASE_URL = window.API_BASE_URL || 'https://mabeet-backend.runasp.net/api';
 
     // 🟢 دالة التحقق من صحة الحقول
     static validateRegisterFields(userData) {
@@ -12,9 +13,8 @@ class MabeetAuth {
         return { valid: true };
     }
 
-    // 🟢 دالة التسجيل
+    // 🟢 دالة التسجيل (معدلة لتضرب في السيرفر الأونلاين مباشرة)
     static async register(userData) {
-     
         const dataToSend = {
             FirstName: userData.firstName,
             LastName: userData.lastName,
@@ -27,6 +27,7 @@ class MabeetAuth {
         };
 
         try {
+            // استخدام الرابط الموحد مباشرة لضمان الاتصال
             const response = await fetch(`${this.API_BASE_URL}/Users/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -45,11 +46,11 @@ class MabeetAuth {
             }
         } catch (error) {
             console.error("Register Error:", error);
-            return { success: false, message: "خطأ في الاتصال بالسيرفر. تأكد من تشغيل الباك إند." };
+            return { success: false, message: "خطأ في الاتصال بالسيرفر أونلاين." };
         }
     }
     
-    // 🟢 دالة الدخول
+    // 🟢 دالة الدخول (معدلة لتضرب في السيرفر الأونلاين مباشرة)
     static async login(email, password) {
         try {
             const response = await fetch(`${this.API_BASE_URL}/Users/login`, {
@@ -61,14 +62,12 @@ class MabeetAuth {
             const data = await response.json();
 
             if (response.ok) {
-                // حفظ البيانات الأساسية
                 localStorage.setItem('userToken', data.token);
                 localStorage.setItem('userRole', data.role); 
-                localStorage.setItem('isLoggedIn', 'true'); // 👈 توحيد الاسم هنا
+                localStorage.setItem('isLoggedIn', 'true'); 
                 
                 const userId = this.getUserIdFromToken(data.token);
                 
-                // حفظ بيانات المستخدم كاملة
                 localStorage.setItem('userData', JSON.stringify({
                     id: userId, 
                     firstName: data.firstName || 'مستخدم', 
@@ -85,11 +84,10 @@ class MabeetAuth {
             }
         } catch (error) {
             console.error("Login Error:", error);
-            return { success: false, message: "خطأ في الاتصال بالسيرفر" };
+            return { success: false, message: "خطأ في الاتصال بالسيرفر أونلاين" };
         }
     }
 
-    // 🟢 دوال مساعدة كانت ناقصة وتسببت في الأخطاء
     static isLoggedIn() {
         return localStorage.getItem('isLoggedIn') === 'true';
     }

@@ -209,7 +209,7 @@ window.cancelBooking = async function(id) {
             Swal.fire({title: 'جاري الإلغاء...', didOpen: () => Swal.showLoading()});
 
             // استدعاء الـ API
-            const response = await fetch(`${API_BASE_URL}/Bookings/${id}/cancel`, {
+            const response = await fetch(`${window.API_BASE_URL}/Bookings/${id}/cancel`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
