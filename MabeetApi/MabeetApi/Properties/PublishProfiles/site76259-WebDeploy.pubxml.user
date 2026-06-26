@@ -7,7 +7,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAQYbU7Ep6W0KYhtKAIMKwRQAAAAACAAAAAAAQZgAAAAEAACAAAADALdlyQLDiHqcXc4Q5XZHDuURb+xeMcinmpkuZsx5hLAAAAAAOgAAAAAIAACAAAAC5ha+JeIxM0EvYp7j90vo6Smuy9pRQQW3dKqnTYICs2SAAAABzBqnwmMjCWaj03f5YFcYKlM20SbKhLzmvhGurbtxzTUAAAAAd/4hb0xegP9UxwY1ZukEX8KbkLWIqV9WJab7fMv1eMB5X6CT4TSaeZwH5jWdPOImqBR0K7glAKDn6SfWoc0BM</EncryptedPassword>
-    <History>True|2026-06-25T20:36:57.2223696Z||;True|2026-06-25T23:26:27.9777173+03:00||;</History>
+    <History>True|2026-06-26T22:18:52.8792849Z||;True|2026-06-27T00:55:00.3942172+03:00||;True|2026-06-27T00:22:42.6274023+03:00||;False|2026-06-27T00:03:47.9309553+03:00||;False|2026-06-26T23:57:09.0233045+03:00||;False|2026-06-26T23:54:07.6748907+03:00||;False|2026-06-26T23:53:41.6105047+03:00||;False|2026-06-26T23:50:49.3561656+03:00||;False|2026-06-26T23:50:15.0051681+03:00||;False|2026-06-26T23:49:24.3354845+03:00||;True|2026-06-26T23:22:19.2325459+03:00||;True|2026-06-26T23:20:06.5712154+03:00||;False|2026-06-26T23:19:05.3757162+03:00||;True|2026-06-26T23:01:41.8473865+03:00||;True|2026-06-26T22:42:27.9847704+03:00||;True|2026-06-25T23:36:57.2223696+03:00||;True|2026-06-25T23:26:27.9777173+03:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Server=db57429.public.databaseasp.net,1433%3b Database=db57429%3b User Id=db57429%3b Password=F%40w46G%3fcx=7X%3b Encrypt=False%3b MultipleActiveResultSets=True%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>

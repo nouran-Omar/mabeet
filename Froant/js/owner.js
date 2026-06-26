@@ -1,69 +1,77 @@
+import ApiService, { API_BASE_URL } from "./api-config.js";
 
+const token = localStorage.getItem("userToken");
+const role = localStorage.getItem("userRole");
 
-const token = localStorage.getItem('userToken');
-const role = localStorage.getItem('userRole');
-
-if (!token || role !== 'Owner') {
-    window.location.href = 'login.html';
+if (!token || role !== "Owner") {
+  window.location.href = "login.html";
 }
 
 async function fetchMyAccommodations() {
-    const listContainer = document.getElementById('accommodationsList');
-    listContainer.innerHTML = '<div class="loading-spinner">جاري تحميل عقاراتك...</div>';
+  const listContainer = document.getElementById("accommodationsList");
+  listContainer.innerHTML =
+    '<div class="loading-spinner">جاري تحميل عقاراتك...</div>';
 
-    try {
-        console.log("🔄 [Owner] جاري طلب قائمة العقارات من السيرفر...");
-        
-        const response = await fetch(`${API_BASE_URL}/Accommodation?t=${new Date().getTime()}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
+  try {
+    console.log("🔄 [Owner] جاري طلب قائمة العقارات من السيرفر...");
 
-        if (response.status === 401) {
-            Swal.fire('تنبيه', 'انتهت الجلسة', 'warning').then(() => logout());
-            return;
-        }
+    const response = await fetch(
+      `${API_BASE_URL}/Accommodation?t=${new Date().getTime()}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
-        const data = await response.json();
-        listContainer.innerHTML = '';
+    if (response.status === 401) {
+      Swal.fire("تنبيه", "انتهت الجلسة", "warning").then(() => logout());
+      return;
+    }
 
-        if (!data || data.length === 0) {
-            listContainer.innerHTML = '<p class="text-center">لا توجد عقارات.</p>';
-            return;
-        }
+    const data = await response.json();
+    listContainer.innerHTML = "";
 
-       for (const acc of data) {
-            const imageUrl = ApiService.getImageUrl(acc.mainImageUrl || acc.MainImageUrl);
-            const name = acc.accommodationName || acc.AccommodationName;
-          
-            let locationDisplay = acc.region || acc.Region; 
+    if (!data || data.length === 0) {
+      listContainer.innerHTML = '<p class="text-center">لا توجد عقارات.</p>';
+      return;
+    }
 
-            if (!locationDisplay || locationDisplay === "string") {
-                locationDisplay = acc.governorateName || acc.cityName || "موقع غير محدد";
-            }
+    for (const acc of data) {
+      const imageUrl = ApiService.getImageUrl(
+        acc.mainImageUrl || acc.MainImageUrl,
+      );
+      const name = acc.accommodationName || acc.AccommodationName;
 
-            const type = acc.accommodationType || acc.AccommodationType || "غير محدد";
-            const desc = acc.accommodationDescription || acc.AccommodationDescription || "";
-            const id = acc.accommodationID || acc.AccommodationID;
+      let locationDisplay = acc.region || acc.Region;
 
-            // السعر
-            let priceDisplay = "0";
-            const price = acc.pricePerNight || acc.PricePerNight;
-            if (price) {
-                priceDisplay = `<span style="font-weight:bold; color:#28a745;">${price}</span> <small style="color:#777">ج.م</small>`;
-            } else {
-                priceDisplay = `<span style="color:#999;">(السعر غير محدد)</span>`;
-            }
+      if (!locationDisplay || locationDisplay === "string") {
+        locationDisplay =
+          acc.governorateName || acc.cityName || "موقع غير محدد";
+      }
 
-            const isApproved = acc.isApproved || acc.IsApproved;
-            const statusBadge = isApproved 
-                ? '<span class="badge bg-success">معتمد</span>' 
-                : '<span class="badge bg-warning text-dark">بانتظار الموافقة</span>';
+      const type = acc.accommodationType || acc.AccommodationType || "غير محدد";
+      const desc =
+        acc.accommodationDescription || acc.AccommodationDescription || "";
+      const id = acc.accommodationID || acc.AccommodationID;
 
-            const card = `
+      // السعر
+      let priceDisplay = "0";
+      const price = acc.pricePerNight || acc.PricePerNight;
+      if (price) {
+        priceDisplay = `<span style="font-weight:bold; color:#28a745;">${price}</span> <small style="color:#777">ج.م</small>`;
+      } else {
+        priceDisplay = `<span style="color:#999;">(السعر غير محدد)</span>`;
+      }
+
+      const isApproved = acc.isApproved || acc.IsApproved;
+      const statusBadge = isApproved
+        ? '<span class="badge bg-success">معتمد</span>'
+        : '<span class="badge bg-warning text-dark">بانتظار الموافقة</span>';
+
+      const card = `
                 <div class="card h-100" id="card-${id}">
                     <div style="position:relative;">
                         <img src="${imageUrl}" class="card-img" alt="${name}" 
@@ -97,75 +105,88 @@ async function fetchMyAccommodations() {
                     </div>
                 </div>
             `;
-            listContainer.innerHTML += card;
+      listContainer.innerHTML += card;
 
-            fetchDetailsAndUpdateCount(id, type);
-        }
-
-    } catch (error) {
-        console.error(error);
-        listContainer.innerHTML = '<p style="color:red">خطأ في الاتصال بالسيرفر</p>';
+      fetchDetailsAndUpdateCount(id, type);
     }
+  } catch (error) {
+    console.error(error);
+    listContainer.innerHTML =
+      '<p style="color:red">خطأ في الاتصال بالسيرفر</p>';
+  }
 }
 
 async function fetchDetailsAndUpdateCount(id, type) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/Accommodation/${id}`, {
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        
-        if (response.ok) {
-            const detail = await response.json();
-            let countText = "0";
-            
-            // حساب العدد الدقيق من التفاصيل
-            if (type.toLowerCase().includes('hotel')) {
-                const count = detail.hotelRooms ? detail.hotelRooms.length : 0;
-                countText = `${count} غرفة`;
-            } else if (type.toLowerCase().includes('student')) {
-                let beds = 0;
-                if (detail.studentRooms) {
-                    detail.studentRooms.forEach(r => { if(r.beds) beds += r.beds.length; });
-                }
-                countText = `${beds} سرير`;
-            } else {
+  try {
+    const response = await fetch(`${API_BASE_URL}/Accommodation/${id}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-                countText = "1 وحدة";
-            }
-            
+    if (response.ok) {
+      const detail = await response.json();
+      let countText = "0";
 
-            const el = document.getElementById(`units-count-${id}`);
-            if (el) el.innerText = countText;
+      // حساب العدد الدقيق من التفاصيل
+      if (type.toLowerCase().includes("hotel")) {
+        const count = detail.hotelRooms ? detail.hotelRooms.length : 0;
+        countText = `${count} غرفة`;
+      } else if (type.toLowerCase().includes("student")) {
+        let beds = 0;
+        if (detail.studentRooms) {
+          detail.studentRooms.forEach((r) => {
+            if (r.beds) beds += r.beds.length;
+          });
         }
-    } catch (e) {
-        console.error(`فشل جلب تفاصيل العقار ${id}`, e);
+        countText = `${beds} سرير`;
+      } else {
+        countText = "1 وحدة";
+      }
+
+      const el = document.getElementById(`units-count-${id}`);
+      if (el) el.innerText = countText;
     }
+  } catch (e) {
+    console.error(`فشل جلب تفاصيل العقار ${id}`, e);
+  }
 }
 
 function logout() {
-    localStorage.clear();
-    window.location.href = 'login.html';
+  localStorage.clear();
+  window.location.href = "login.html";
 }
 
 window.deleteAccommodation = async (id) => {
-    if(await Swal.fire({title: 'تأكيد الحذف؟', text: "سيتم حذف العقار وجميع الغرف المرتبطة به.", icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء'}).then(r => r.isConfirmed)) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/Accommodation/${id}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            
-            if (response.ok) {
-                Swal.fire('تم', 'تم الحذف بنجاح', 'success');
-                fetchMyAccommodations();
-            } else {
-                Swal.fire('خطأ', 'لا يمكن حذف العقار (قد يكون مرتبطاً بحجوزات)', 'error');
-            }
-        } catch (e) {
-            Swal.fire('خطأ', 'حدث خطأ في الاتصال', 'error');
-        }
+  if (
+    await Swal.fire({
+      title: "تأكيد الحذف؟",
+      text: "سيتم حذف العقار وجميع الغرف المرتبطة به.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "نعم، احذف",
+      cancelButtonText: "إلغاء",
+    }).then((r) => r.isConfirmed)
+  ) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/Accommodation/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        Swal.fire("تم", "تم الحذف بنجاح", "success");
+        fetchMyAccommodations();
+      } else {
+        Swal.fire(
+          "خطأ",
+          "لا يمكن حذف العقار (قد يكون مرتبطاً بحجوزات)",
+          "error",
+        );
+      }
+    } catch (e) {
+      Swal.fire("خطأ", "حدث خطأ في الاتصال", "error");
     }
+  }
 };
 
-document.addEventListener('DOMContentLoaded', fetchMyAccommodations);
+document.addEventListener("DOMContentLoaded", fetchMyAccommodations);

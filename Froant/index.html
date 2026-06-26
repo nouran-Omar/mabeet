@@ -1,246 +1,337 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mabeet </title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mabeet</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <style>
-        .hero-home {
-            background: linear-gradient(rgba(27, 60, 83, 0.7), rgba(35, 76, 106, 0.6)), 
-                        url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed; /* تأثير Parallax */
-            height: 85vh; /* ارتفاع كامل للشاشة تقريباً */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            border-radius: 0 0 50px 50px;
-            margin-bottom: 60px;
-            position: relative;
-        }
+      .hero-home {
+        background:
+          linear-gradient(rgba(27, 60, 83, 0.7), rgba(35, 76, 106, 0.6)),
+          url("https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed; /* تأثير Parallax */
+        height: 85vh; /* ارتفاع كامل للشاشة تقريباً */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        border-radius: 0 0 50px 50px;
+        margin-bottom: 60px;
+        position: relative;
+      }
 
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 900;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            margin-bottom: 20px;
-        }
+      .hero-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        margin-bottom: 20px;
+      }
 
-        .hero-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto 40px;
-            line-height: 1.8;
-        }
+      .hero-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+      }
 
-        /* تعديل صندوق البحث ليطفو فوق الهيرو */
-        .search-container-home {
-            margin-top: -100px; /* سحب للأعلى */
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(27, 60, 83, 0.15);
-            border: 1px solid rgba(255,255,255,0.5);
-        }
+      /* تعديل صندوق البحث ليطفو فوق الهيرو */
+      .search-container-home {
+        margin-top: -100px; /* سحب للأعلى */
+        position: relative;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 30px;
+        border-radius: 25px;
+        box-shadow: 0 20px 50px rgba(27, 60, 83, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
 
-        /* أيقونات المميزات */
-        .feature-box {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            height: 100%;
-            border: 1px solid #f0f0f0;
-        }
-        
-        .feature-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(27, 60, 83, 0.1);
-            border-color: var(--primary-medium);
-        }
+      /* أيقونات المميزات */
+      .feature-box {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid #f0f0f0;
+      }
 
-        .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: rgba(69, 104, 130, 0.1);
-            color: var(--primary-dark);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            margin: 0 auto 20px;
-            transition: 0.3s;
-        }
+      .feature-box:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(27, 60, 83, 0.1);
+        border-color: var(--primary-medium);
+      }
 
-        .feature-box:hover .feature-icon {
-            background: var(--primary-dark);
-            color: white;
-        }
+      .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: rgba(69, 104, 130, 0.1);
+        color: var(--primary-dark);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin: 0 auto 20px;
+        transition: 0.3s;
+      }
+
+      .feature-box:hover .feature-icon {
+        background: var(--primary-dark);
+        color: white;
+      }
     </style>
-</head>
-<body>
-    
+  </head>
+  <body>
     <div id="navbar-placeholder"></div>
 
     <header class="hero-home">
-        <div class="container" data-aos="zoom-in">
-            <h1 class="hero-title">اكتشف روعة الإقامة في مصر</h1>
-            <p class="hero-subtitle">من الفنادق الفاخرة المطلة على النيل إلى الشقق العصرية والسكن الطلابي المريح. Mabeet هو بوابتك لتجربة سكن لا تُنسى.</p>
-            
-            <div class="d-flex justify-content-center gap-3">
-                <a href="#explore" class="btn btn-auth px-5 py-3 fs-5 fw-bold">ابدأ التصفح</a>
-                <a href="#services" class="btn btn-outline-light px-5 py-3 fs-5 fw-bold rounded-pill">تعرف علينا</a>
-            </div>
+      <div class="container" data-aos="zoom-in">
+        <h1 class="hero-title">اكتشف روعة الإقامة في مصر</h1>
+        <p class="hero-subtitle">
+          من الفنادق الفاخرة المطلة على النيل إلى الشقق العصرية والسكن الطلابي
+          المريح. Mabeet هو بوابتك لتجربة سكن لا تُنسى.
+        </p>
+
+        <div class="d-flex justify-content-center gap-3">
+          <a href="#explore" class="btn btn-auth px-5 py-3 fs-5 fw-bold"
+            >ابدأ التصفح</a
+          >
+          <a
+            href="#services"
+            class="btn btn-outline-light px-5 py-3 fs-5 fw-bold rounded-pill"
+            >تعرف علينا</a
+          >
         </div>
+      </div>
     </header>
 
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="search-container-home" data-aos="fade-up">
-                    <div class="row g-3 align-items-end">
-                        <div class="col-md-4">
-                            <label class="search-label">ماذا تبحث عنه؟</label>
-                            <select class="form-select form-select-custom" id="typeFilter">
-                                <option value="hotels.html">🏨 فنادق فاخرة</option>
-                                <option value="apartments.html">🏠 شقق سكنية</option>
-                                <option value="student-housing.html">🎓 سكن طلابي</option>
-                            </select>
-                        </div>
-                        <div class="col-md-5">
-                            <label class="search-label">الوجهة (المدينة)</label>
-                            <select class="form-select form-select-custom" id="cityFilter">
-                                <option value="">كل المدن</option>
-                                <option value="1">القاهرة</option>
-                                <option value="2">الإسكندرية</option>
-                                <option value="3">المنوفية</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-search" onclick="goSearch()">
-                                بحث شامل <i class="fas fa-arrow-left ms-2"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="search-container-home" data-aos="fade-up">
+            <div class="row g-3 align-items-end">
+              <div class="col-md-4">
+                <label class="search-label">ماذا تبحث عنه؟</label>
+                <select class="form-select form-select-custom" id="typeFilter">
+                  <option value="hotels.html">🏨 فنادق فاخرة</option>
+                  <option value="apartments.html">🏠 شقق سكنية</option>
+                  <option value="student-housing.html">🎓 سكن طلابي</option>
+                </select>
+              </div>
+              <div class="col-md-5">
+                <label class="search-label">الوجهة (المدينة)</label>
+                <select class="form-select form-select-custom" id="cityFilter">
+                  <option value="">كل المدن</option>
+                  <option value="1">القاهرة</option>
+                  <option value="2">الإسكندرية</option>
+                  <option value="3">المنوفية</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <button class="btn btn-search" onclick="goSearch()">
+                  بحث شامل <i class="fas fa-arrow-left ms-2"></i>
+                </button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <section class="section py-5 my-5" id="services">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h6 class="text-secondary-custom fw-bold text-uppercase ls-2">خدماتنا</h6>
-                <h2 class="display-5 fw-bold">لماذا تختار Mabeet؟</h2>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-box">
-                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                        <h4>حجوزات آمنة 100%</h4>
-                        <p class="text-muted">نضمن لك عملية دفع آمنة وحماية كاملة لبياناتك الشخصية، مع سياسات إلغاء مرنة.</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-box">
-                        <div class="feature-icon"><i class="fas fa-tags"></i></div>
-                        <h4>أفضل الأسعار</h4>
-                        <p class="text-muted">نقدم لك أسعاراً تنافسية وعروضاً حصرية لن تجدها في أي مكان آخر، بدون رسوم خفية.</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-box">
-                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
-                        <h4>دعم فني متواصل</h4>
-                        <p class="text-muted">فريقنا متاح على مدار الساعة لمساعدتك في أي استفسار أو مشكلة قد تواجهها.</p>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+          <h6 class="text-secondary-custom fw-bold text-uppercase ls-2">
+            خدماتنا
+          </h6>
+          <h2 class="display-5 fw-bold">لماذا تختار Mabeet؟</h2>
         </div>
+
+        <div class="row g-4">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-box">
+              <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+              <h4>حجوزات آمنة 100%</h4>
+              <p class="text-muted">
+                نضمن لك عملية دفع آمنة وحماية كاملة لبياناتك الشخصية، مع سياسات
+                إلغاء مرنة.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-box">
+              <div class="feature-icon"><i class="fas fa-tags"></i></div>
+              <h4>أفضل الأسعار</h4>
+              <p class="text-muted">
+                نقدم لك أسعاراً تنافسية وعروضاً حصرية لن تجدها في أي مكان آخر،
+                بدون رسوم خفية.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-box">
+              <div class="feature-icon"><i class="fas fa-headset"></i></div>
+              <h4>دعم فني متواصل</h4>
+              <p class="text-muted">
+                فريقنا متاح على مدار الساعة لمساعدتك في أي استفسار أو مشكلة قد
+                تواجهها.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="section py-5 bg-light" id="explore">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-5">
-                <div>
-                    <h2 class="fw-bold mb-1">وجهات ساحرة ✨</h2>
-                    <p class="text-muted mb-0">أماكن إقامة مختارة بعناية لراحتك</p>
-                </div>
-                <a href="hotels.html" class="btn btn-outline-dark rounded-pill px-4">عرض الكل</a>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                    <div class="property-card h-100 position-relative">
-                        <span class="badge-type"><i class="fas fa-star text-warning"></i> موصى به</span>
-                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="فندق النيل">
-                        <div class="card-body">
-                            <h5 class="card-title">فندق رويال فيو</h5>
-                            <p class="location-text"><i class="fas fa-map-marker-alt text-danger me-2"></i> القاهرة - الزمالك</p>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="price-text">3,500 <small class="fs-6 fw-normal">ج.م / ليلة</small></span>
-                                <a href="hotels.html" class="btn-details">التفاصيل</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="property-card h-100 position-relative">
-                        <span class="badge-type bg-success"><i class="fas fa-home"></i> شقة عائلية</span>
-                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="شقة المعادي">
-                        <div class="card-body">
-                            <h5 class="card-title">ستوديو مودرن بالمعادي</h5>
-                            <p class="location-text"><i class="fas fa-map-marker-alt text-danger me-2"></i> القاهرة - المعادي</p>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="price-text">1,200 <small class="fs-6 fw-normal">ج.م / ليلة</small></span>
-                                <a href="apartments.html" class="btn-details">التفاصيل</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="property-card h-100 position-relative">
-                        <span class="badge-type" style="background: #6f42c1;"><i class="fas fa-graduation-cap"></i> سكن طلابي</span>
-                        <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="سكن الجامعة">
-                        <div class="card-body">
-                            <h5 class="card-title">دار المغتربين الفاخرة</h5>
-                            <p class="location-text"><i class="fas fa-map-marker-alt text-danger me-2"></i> الإسكندرية - سموحة</p>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="price-text">850 <small class="fs-6 fw-normal">ج.م / سرير</small></span>
-                                <a href="student-housing.html" class="btn-details">التفاصيل</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <div>
+            <h2 class="fw-bold mb-1">وجهات ساحرة ✨</h2>
+            <p class="text-muted mb-0">أماكن إقامة مختارة بعناية لراحتك</p>
+          </div>
+          <a href="hotels.html" class="btn btn-outline-dark rounded-pill px-4"
+            >عرض الكل</a
+          >
         </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6" data-aos="fade-up">
+            <div class="property-card h-100 position-relative">
+              <span class="badge-type"
+                ><i class="fas fa-star text-warning"></i> موصى به</span
+              >
+              <img
+                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="card-img-top"
+                alt="فندق النيل"
+              />
+              <div class="card-body">
+                <h5 class="card-title">فندق رويال فيو</h5>
+                <p class="location-text">
+                  <i class="fas fa-map-marker-alt text-danger me-2"></i> القاهرة
+                  - الزمالك
+                </p>
+                <div
+                  class="d-flex justify-content-between align-items-center mt-3"
+                >
+                  <span class="price-text"
+                    >3,500
+                    <small class="fs-6 fw-normal">ج.م / ليلة</small></span
+                  >
+                  <a href="hotels.html" class="btn-details">التفاصيل</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div class="property-card h-100 position-relative">
+              <span class="badge-type bg-success"
+                ><i class="fas fa-home"></i> شقة عائلية</span
+              >
+              <img
+                src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="card-img-top"
+                alt="شقة المعادي"
+              />
+              <div class="card-body">
+                <h5 class="card-title">ستوديو مودرن بالمعادي</h5>
+                <p class="location-text">
+                  <i class="fas fa-map-marker-alt text-danger me-2"></i> القاهرة
+                  - المعادي
+                </p>
+                <div
+                  class="d-flex justify-content-between align-items-center mt-3"
+                >
+                  <span class="price-text"
+                    >1,200
+                    <small class="fs-6 fw-normal">ج.م / ليلة</small></span
+                  >
+                  <a href="apartments.html" class="btn-details">التفاصيل</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-4 col-md-6"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <div class="property-card h-100 position-relative">
+              <span class="badge-type" style="background: #6f42c1"
+                ><i class="fas fa-graduation-cap"></i> سكن طلابي</span
+              >
+              <img
+                src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="card-img-top"
+                alt="سكن الجامعة"
+              />
+              <div class="card-body">
+                <h5 class="card-title">دار المغتربين الفاخرة</h5>
+                <p class="location-text">
+                  <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                  الإسكندرية - سموحة
+                </p>
+                <div
+                  class="d-flex justify-content-between align-items-center mt-3"
+                >
+                  <span class="price-text"
+                    >850 <small class="fs-6 fw-normal">ج.م / سرير</small></span
+                  >
+                  <a href="student-housing.html" class="btn-details"
+                    >التفاصيل</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="py-5" style="background-color: var(--primary-dark); color: white;">
-        <div class="container text-center py-4">
-            <h2 class="fw-bold mb-3">هل أنت مالك عقار؟</h2>
-            <p class="lead opacity-75 mb-4">انضم إلى مئات الملاك واعرض عقارك أمام آلاف الباحثين عن سكن يومياً.</p>
-            <a href="regester.html" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-primary">سجّل عقارك الآن</a>
-        </div>
+    <section
+      class="py-5"
+      style="background-color: var(--primary-dark); color: white"
+    >
+      <div class="container text-center py-4">
+        <h2 class="fw-bold mb-3">هل أنت مالك عقار؟</h2>
+        <p class="lead opacity-75 mb-4">
+          انضم إلى مئات الملاك واعرض عقارك أمام آلاف الباحثين عن سكن يومياً.
+        </p>
+        <a
+          href="regester.html"
+          class="btn btn-light rounded-pill px-5 py-3 fw-bold text-primary"
+          >سجّل عقارك الآن</a
+        >
+      </div>
     </section>
 
     <div id="footer"></div>
@@ -249,28 +340,28 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="./js/api-config.js"></script>
-    <script src="./js/auth.js"></script>
-    <script src="./js/components.js"></script>
+    <script type="module" src="./js/api-config.js"></script>
+    <script type="module" src="./js/auth.js"></script>
+    <script type="module" src="./js/components.js"></script>
 
     <script>
-        AOS.init({
-            duration: 800,
-            once: true
-        });
+      AOS.init({
+        duration: 800,
+        once: true,
+      });
 
-        // دالة البحث البسيطة للتوجيه
-        function goSearch() {
-            const page = document.getElementById('typeFilter').value;
-            const city = document.getElementById('cityFilter').value;
-            
-            // توجيه المستخدم للصفحة المختارة مع فلتر المدينة
-            let url = page;
-            if(city) {
-                url += `?CityID=${city}`;
-            }
-            window.location.href = url;
+      // دالة البحث البسيطة للتوجيه
+      function goSearch() {
+        const page = document.getElementById("typeFilter").value;
+        const city = document.getElementById("cityFilter").value;
+
+        // توجيه المستخدم للصفحة المختارة مع فلتر المدينة
+        let url = page;
+        if (city) {
+          url += `?CityID=${city}`;
         }
+        window.location.href = url;
+      }
     </script>
-</body>
+  </body>
 </html>

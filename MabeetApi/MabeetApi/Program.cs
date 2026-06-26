@@ -31,9 +31,9 @@ builder.Services.AddCors(options =>
 // 2. إعداد قاعدة البيانات مع دعم منفذ SQL Server صراحة لـ MonsterASP
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-	var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-		?? "Server=db57429.databaseasp.net,1433; Database=db57429; User Id=db57429; Password=F@w46G?cx=7X; Encrypt=False; MultipleActiveResultSets=True;";
-	options.UseSqlServer(connectionString);
+	// 🟢 الطريقة الصحيحة والآمنة: قراءة الـ Connection String من إعدادات السيرفر فقط
+	var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+	options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
 });
 
 // 3. إعداد Identity
@@ -96,7 +96,7 @@ using (var scope = app.Services.CreateScope())
 	}
 }
 
-// Seed Data (Development only)
+// 🟢 Seed Data (Development only) - تم إعادة الشرط لمنع حذف البيانات في كل مرة
 if (app.Environment.IsDevelopment())
 {
 	using (var scope = app.Services.CreateScope())

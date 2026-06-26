@@ -79,16 +79,29 @@ namespace MabeetApi.Services
 		public async Task<List<Accommodation>> GetAvailableAccommodationsAsync(AvailabilityCheckDto dto)
 		{
 			var query = _context.Accommodations
-				.Include(a => a.Location).ThenInclude(l => l.City)
+				.Include(a => a.Location).ThenInclude(l => l.City).ThenInclude(c => c.Governorate) // 🟢 Include Governorate
 				.Include(a => a.Images)
-				// Casting لجلب العلاقات الفرعية وحل المشكلة
 				.Include(a => ((Hotel)a).HotelRooms)
 				.Include(a => ((StudentHouse)a).StudentRooms).ThenInclude(sr => sr.Beds)
 				.AsQueryable();
 
-            query = query.Where(a => a.IsApproved == true);
+            // 🟢 فلتر الحالة
+            if (!string.IsNullOrEmpty(dto.Status) && dto.Status == "Approved")
+            {
+                query = query.Where(a => a.IsApproved == true);
+            }
 
-            if (dto.CityID.HasValue)
+            // 🟢 فلتر المحافظة (الجديد)
+            if (!string.IsNullOrEmpty(dto.Governorate))
+            {
+                var governorates = dto.Governorate.Split(',').Select(g => g.Trim()).ToList();
+                if (governorates.Any())
+                {
+                    query = query.Where(a => a.Location != null && a.Location.City != null && a.Location.City.Governorate != null && governorates.Contains(a.Location.City.Governorate.GovernorateName));
+                }
+            }
+
+			if (dto.CityID.HasValue)
 				query = query.Where(a => a.Location.CityID == dto.CityID);
 
 			if (!string.IsNullOrEmpty(dto.AccommodationType))

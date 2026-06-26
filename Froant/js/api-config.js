@@ -1,5 +1,4 @@
 // api-config.js
-
 // 🚀 روابط السيرفر الحقيقي (Production)
 const API_BASE_URL = `https://mabeet-backend.runasp.net/api`;
 const SERVER_URL = `https://mabeet-backend.runasp.net`;
@@ -18,6 +17,16 @@ window.API_BASE_URL = API_BASE_URL;
 const ApiService = {
   getToken() {
     return localStorage.getItem("userToken");
+  },
+
+  // 🟢 إضافة دالة للحصول على بيانات المستخدم الحالي
+  getCurrentUser() {
+    const data = localStorage.getItem("userData");
+    try {
+      return data ? JSON.parse(data) : null;
+    } catch (e) {
+      return null;
+    }
   },
 
   getImageUrl(imagePath) {

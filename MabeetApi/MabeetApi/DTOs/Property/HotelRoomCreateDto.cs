@@ -13,7 +13,7 @@ namespace MabeetApi.DTOs.Property
         public RoomType Type { get; set; }
 
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
-        public string RoomDescription { get; set; }
+        public string? RoomDescription { get; set; }
 
         [Required(ErrorMessage = "Price per night is required")]
         [Range(0.0, 15000.0, ErrorMessage = "Price must be between 0 and 15000")]

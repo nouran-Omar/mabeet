@@ -12,5 +12,7 @@ namespace MabeetApi.DTOs
 
         public int? CityID { get; set; }
         public string? AccommodationType { get; set; } // "Hotel", "LocalLoding", "StudentHouse"
+        public string? Governorate { get; set; }
+        public string? Status { get; set; }
     }
 }

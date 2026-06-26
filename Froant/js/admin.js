@@ -1,5 +1,7 @@
+import { SERVER_URL } from "./api-config.js";
+
 window.IS_REAL_API = true;
-const API_BASE_URL = `${window.SERVER_URL}/api/admin`; 
+const API_BASE_URL = `${SERVER_URL}/api/admin`; 
 
 const contentPlaceholder = document.getElementById('content-placeholder');
 const sidebarLinksDesktop = document.querySelectorAll('#admin-sidebar .nav-link');
