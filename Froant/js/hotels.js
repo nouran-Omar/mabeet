@@ -34,7 +34,7 @@ async function loadHotels(filters = {}) {
       : new Date(new Date().setDate(new Date().getDate() + 1)).toISOString();
 
     const targetGovernorates =
-      "سوهاج,القاهرة,الجيزة,الإسكندرية,المنوفية,الإسماعيلية";
+      "سوهاج";
     const cityFilterValue = cityFilterElement ? cityFilterElement.value : "";
     const governorateFilter = cityFilterValue || targetGovernorates;
 

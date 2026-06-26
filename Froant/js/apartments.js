@@ -35,7 +35,7 @@ async function loadApartments(filters = {}) {
       : new Date(new Date().setDate(new Date().getDate() + 1)).toISOString();
 
     const targetGovernorates =
-      "سوهاج,القاهرة,الجيزة,الإسكندرية,المنوفية,الإسماعيلية";
+      "سوهاج";
 
     // القيمة التي تستخدم لفلترة الـ API (عادةً تكون المحافظة)
     const cityFilterValue = cityFilterElement ? cityFilterElement.value : "";
@@ -80,6 +80,15 @@ async function loadApartments(filters = {}) {
       false,
     );
     console.log("📦 [API Response] الداتا الخام للشقق:", accommodations);
+
+    if (!accommodations) {
+      if (spinner) spinner.style.display = "none";
+      if (container) {
+        container.innerHTML =
+          '<div class="col-12 text-center"><div class="alert alert-danger">حدث خطأ في جلب البيانات. قد تكون هناك مشكلة في الاتصال بالخادم.</div></div>';
+      }
+      return;
+    }
 
     // =================================================================
     // 🌟 دالة مساعدة لاستخراج بيانات المدينة بدقة
