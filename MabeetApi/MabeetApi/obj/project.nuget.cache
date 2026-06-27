@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QwkioV+9IQE=",
+  "dgSpecHash": "K3dJ03cu27E=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Nour\\OneDrive - Egyptian E-Learning University\\Apps\\Desktop\\New folder\\Pull\\mabeet\\MabeetApi\\MabeetApi\\MabeetApi.csproj",
+  "projectFilePath": "C:\\Users\\Nour\\OneDrive - Egyptian E-Learning University\\Apps\\Desktop\\pubplic repo\\mabeet\\MabeetApi\\MabeetApi\\MabeetApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nour\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Nour\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

@@ -5059,11 +5059,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nour\\OneDrive - Egyptian E-Learning University\\Apps\\Desktop\\New folder\\Pull\\mabeet\\MabeetApi\\MabeetApi\\MabeetApi.csproj",
+      "projectUniqueName": "C:\\Users\\Nour\\OneDrive - Egyptian E-Learning University\\Apps\\Desktop\\pubplic repo\\mabeet\\MabeetApi\\MabeetApi\\MabeetApi.csproj",
       "projectName": "MabeetApi",
-      "projectPath": "C:\\Users\\Nour\\OneDrive - Egyptian E-Learning University\\Apps\\Desktop\\New folder\\Pull\\mabeet\\MabeetApi\\MabeetApi\\MabeetApi.csproj",
+      "projectPath": "C:\\Users\\Nour\\OneDrive - Egyptian E-Learning University\\Apps\\Desktop\\pubplic repo\\mabeet\\MabeetApi\\MabeetApi\\MabeetApi.csproj",
       "packagesPath": "C:\\Users\\Nour\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nour\\OneDrive - Egyptian E-Learning University\\Apps\\Desktop\\New folder\\Pull\\mabeet\\MabeetApi\\MabeetApi\\obj\\",
+      "outputPath": "C:\\Users\\Nour\\OneDrive - Egyptian E-Learning University\\Apps\\Desktop\\pubplic repo\\mabeet\\MabeetApi\\MabeetApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
